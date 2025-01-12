@@ -1,6 +1,59 @@
 import type { RequestHandler } from "express";
 import programRepository from "./programRepository";
 
+const validate: RequestHandler = (req, res, next) => {
+  type ValidationError = {
+    field: string;
+    message: string;
+  };
+
+  const errors: ValidationError[] = [];
+
+  const { title, synopsis, poster, country, year } = req.body;
+  if (title == null) {
+    errors.push({ field: "title", message: "The field is required" });
+  } else if (title.length > 255) {
+    errors.push({
+      field: "title",
+      message: "Should contain less than 255 characters",
+    });
+  }
+
+  if (synopsis == null) {
+    errors.push({ field: "synopsis", message: "The field is required" });
+  }
+
+  if (poster == null) {
+    errors.push({ field: "poster", message: "The field is required" });
+  } else if (poster.length > 255) {
+    errors.push({
+      field: "poster",
+      message: "Should contain less than 255 characters",
+    });
+  }
+
+  if (country == null) {
+    errors.push({ field: "country", message: "The field is required" });
+  } else if (country.length > 100) {
+    errors.push({
+      field: "country",
+      message: "Should contain less than 100 characters",
+    });
+  }
+
+  if (year == null) {
+    errors.push({ field: "year", message: "The field is required" });
+  }
+
+  // Add logic to handle errors if any
+  if (errors.length > 0) {
+    res.status(400).json({ errors });
+    return;
+  }
+
+  next();
+};
+
 const browse: RequestHandler = async (req, res, next) => {
   try {
     const programs = await programRepository.readAll();
@@ -76,4 +129,4 @@ const destroy: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { browse, read, edit, add, destroy };
+export default { browse, read, edit, add, destroy, validate };

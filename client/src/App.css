@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  color: #20123a;
+  color: #eeeeee;
 }
 
 body {
@@ -10,6 +10,7 @@ body {
   font-size: 16px;
   line-height: 1.7;
   margin: 0;
+  background-color: rgb(41, 41, 41);
 }
 
 #root {
@@ -144,4 +145,9 @@ footer {
 
 img {
   width: 150px;
+}
+
+* {
+  color: #111;
+  background-color: #ababab;
 }
